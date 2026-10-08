@@ -69,7 +69,7 @@ def Board_check(board,type,color):
 
 # Gør type-matrix billede stører (ellers er de kun 5x5 pixels store)
 def Enlarge(img):
-     imgUP = cv2.resize(img, dsize=(img.shape[0]*40, img.shape[1]*40)) #sizes up
+     imgUP = cv2.resize(img, dsize=(img.shape[0]*40, img.shape[1]*40,), interpolation = cv2.INTER_NEAREST) #sizes up
      return imgUP
 
 #outblib = thing(cornOut,corn, 1,1)
