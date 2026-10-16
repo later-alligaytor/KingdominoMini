@@ -4,7 +4,7 @@ from matplotlib.pyplot import hsv
 import numpy as np
     
 #Load image
-image = cv.imread("King Domino dataset/Cropped and perspective corrected boards/5.jpg")
+image = cv.imread("King Domino dataset/Cropped and perspective corrected boards/14.jpg")
 hsv = cv.cvtColor(image, cv.COLOR_BGR2HSV) #HSV is better for color detection than RGB
 cv.imshow("Image", image)
 cv.waitKey(0) #Wait to press a key, or the window will close immediately
