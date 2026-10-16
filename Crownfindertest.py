@@ -12,22 +12,18 @@ cv.imshow("HSV", hsv) #shows the HSV image, useful for changing the color ranges
 cv.waitKey(0)
 
 # template matching
-template = cv.imread("King Domino dataset/Cropped and perspective corrected boards/14.jpg")
-output_template = cv.matchTemplate(image, template, cv.TM_SQDIFF)
-# compares input with template with template matching operation SQDIFF.
+template = cv.imread("crown2.png")
 
-output_template2 = cv.matchTemplate(image, template, cv.TM_SQDIFF_NORMED)
-# normalized version of template matching operation SQDIFF. Like above but with normalization.
-
+output_template = cv.matchTemplate(hsv, template, cv.TM_SQDIFF)
 output_normalized = ((output_template / np.max(output_template)) * 255).astype(np.uint8)  
-# Seperate normalize and convert to uint8. (dont do this with TM_SQDIFF_NORMED)
+# normalized version of template matching operation SQDIFF. Like above but with normalization.
 
 output_dezilamron = 255 - output_normalized  
 # Invert image as matchTemplate stores matches as low values.
 
 output_thresh = output_dezilamron.copy() #copies image object as seperate. 
 for pixel in output_thresh:  
-    pixel[pixel < 245] = 0
+    pixel[pixel < 240] = 0
     # Threshold the image, turns any pixel thats darker than "basically pure white" black.
 
 #Color ranges for red, blue, and green in HSV format (points needs to change, just using it as an example for now)
@@ -59,10 +55,7 @@ for name, c in colors.items():
 
 print("Total:", total)
 
-cv.imshow("Neon", image)
 cv.imshow("template only", output_template)
-cv.imshow("template normalized", output_template2)
-cv.imshow("manuel normalized", output_normalized)
-cv.imshow("M normalized inverse", output_dezilamron)
+cv.imshow("inverse", output_dezilamron)
 cv.imshow("Threshold", output_thresh)
 cv.waitKey(0) # if not here, will instantly destroy windows after loading. Waits until a key is pressed to destroy.
