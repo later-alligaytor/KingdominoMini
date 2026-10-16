@@ -11,6 +11,25 @@ cv.waitKey(0) #Wait to press a key, or the window will close immediately
 cv.imshow("HSV", hsv) #shows the HSV image, useful for changing the color ranges
 cv.waitKey(0)
 
+# template matching
+template = cv.imread("King Domino dataset/Cropped and perspective corrected boards/14.jpg")
+output_template = cv.matchTemplate(image, template, cv.TM_SQDIFF)
+# compares input with template with template matching operation SQDIFF.
+
+output_template2 = cv.matchTemplate(image, template, cv.TM_SQDIFF_NORMED)
+# normalized version of template matching operation SQDIFF. Like above but with normalization.
+
+output_normalized = ((output_template / np.max(output_template)) * 255).astype(np.uint8)  
+# Seperate normalize and convert to uint8. (dont do this with TM_SQDIFF_NORMED)
+
+output_dezilamron = 255 - output_normalized  
+# Invert image as matchTemplate stores matches as low values.
+
+output_thresh = output_dezilamron.copy() #copies image object as seperate. 
+for pixel in output_thresh:  
+    pixel[pixel < 245] = 0
+    # Threshold the image, turns any pixel thats darker than "basically pure white" black.
+
 #Color ranges for red, blue, and green in HSV format (points needs to change, just using it as an example for now)
 colors = {
     "red": {"low":(0, 120, 70), "high":(10, 255, 255), "point": "3"},
@@ -26,6 +45,7 @@ for name, c in colors.items():
     #Build a mask: 255 where the color matches, 0 elsewhere
     mask = cv.inRange(hsv, np.array(c["low"]), np.array(c["high"]))
 
+
     #Remove noise and close small holes
     mask = cv.morphologyEx(mask, cv.MORPH_OPEN, kernel)
     mask = cv.morphologyEx(mask, cv.MORPH_CLOSE, kernel)
@@ -37,8 +57,12 @@ for name, c in colors.items():
     pieces = sum(1 for i in range(1, count)
                  if stats[i, cv.CC_STAT_AREA] >= MIN_AREA)
 
-    score = pieces * int(c["point"]) #Calculate score for this color
-    total += score #Add to total score
-    print(f"{name}: {pieces} pieces = {score} points")
-
 print("Total:", total)
+
+cv.imshow("Neon", image)
+cv.imshow("template only", output_template)
+cv.imshow("template normalized", output_template2)
+cv.imshow("manuel normalized", output_normalized)
+cv.imshow("M normalized inverse", output_dezilamron)
+cv.imshow("Threshold", output_thresh)
+cv.waitKey(0) # if not here, will instantly destroy windows after loading. Waits until a key is pressed to destroy.
