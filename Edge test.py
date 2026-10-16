@@ -30,7 +30,7 @@ for name, c in colors.items():
     mask = cv.morphologyEx(mask, cv.MORPH_OPEN, kernel)
     mask = cv.morphologyEx(mask, cv.MORPH_CLOSE, kernel)
 
-    #Find blobs (connected components)
+    #Find connected components
     count, labels, stats, centroids = cv.connectedComponentsWithStats(mask)
 
     #Label 0 is the background, so start at 1
