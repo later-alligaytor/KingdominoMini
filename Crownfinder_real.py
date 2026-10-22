@@ -1,6 +1,9 @@
 import cv2 as cv
 import numpy as np
 
+temp = cv.imread("crown6.png")
+temp1 = temp.copy()
+
 def find_crowns(image, template_paths, threshold=0.7):
     #template_paths is a list of paths to the crown templates
     #threshold is the match score from 0 to 1 (higher = stricter)
@@ -29,17 +32,19 @@ def find_crowns(image, template_paths, threshold=0.7):
             #Also wipe the score map around it so this loop doesn't repick it
             x0, y0 = max(0, x - w // 2), max(0, y - h // 2)
             result[y0:y + h // 2 + 1, x0:x + w // 2 + 1] = 0
-        
-        return crowns
+    
+    return crowns
 
 if __name__ == "__main__":
     #Only runs when you execute this file directly, not when it is imported
     img = cv.imread("King Domino dataset/Cropped and perspective corrected boards/52.jpg")
-    boxes = find_crowns(img, ["crown1.png", "crown.png"], threshold=0.6)
-
+    boxes = find_crowns(img, ["crown6.png", "crownupsidedown.png"], threshold=0.6)
+    blurred_color = cv.GaussianBlur(temp1[:, :, :3], (9, 9), 0)
+    
     print("Crowns found:", len(boxes))
     for x, y, w, h in boxes:
         cv.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
-        cv.imshow("Crowns", img)
-        cv.waitKey(0)
-        cv.destroyAllWindows()
+    
+    cv.imshow("Crowns", img)
+    cv.waitKey(0)
+    cv.destroyAllWindows()
