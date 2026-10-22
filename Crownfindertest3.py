@@ -2,13 +2,13 @@ import cv2 as cv
 import numpy as np
     
 #Load image
-image = cv.imread("King Domino dataset/Cropped and perspective corrected boards/14.jpg")
+image = cv.imread("King Domino dataset/Cropped and perspective corrected boards/52.jpg")
 hsv = cv.cvtColor(image, cv.COLOR_BGR2HSV) #HSV is better for color detection than RGB
 output = image.copy() #Draw on the copy so the original stays clean
 
 #Color ranges for red, blue, and green in HSV format - change numbers to get the crowns more clear
-CROWN_LOW = (15, 110, 110)
-CROWN_HIGH = (90, 130, 255)
+CROWN_LOW = (15, 111, 111)
+CROWN_HIGH = (85, 130, 255)
 
 MIN_AREA = 20 #since the crowns are small we should start low and slowly increase
 kernel = np.ones((3, 3), np.uint8) #A small kernel so the crowns survive
