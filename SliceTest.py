@@ -132,5 +132,5 @@ def BoardAnalysis(int):
         cv2.imshow(f"{color[2]}", aUP) #color[2] kan også erstates med colors[i][2]
 
 # BoardAnalysis(1)
-BoardAnalysis(10)
+BoardAnalysis(9)
 cv2.waitKey(0)
