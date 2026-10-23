@@ -104,13 +104,13 @@ def connected_blobs(board): #blobs af connected felter.
     return result
 
 #Get num of tiles in each blob
-def blob_tiles(blobsimg):
+def blob_tiles(blobsimg, color):
     blobs = numpy.unique(blobsimg)
     blobs = blobs[blobs != 0] # gets the unique numbers in matrix, and removes 0's. Fx [1, 1, 0, 2, 3, 4, 4, 0,] -> [0, 1, 2, 3, 4] -> [1, 2, 3, 4]
     print(blobs)
     
     for i, blob in enumerate(blobs):
-        print(f"number of tiles in id {i+1}: {numpy.count_nonzero(blobsimg == blob)}") #i+1 kan også erstates af "blob"
+        print(f"number of {color[2]} tiles in id {i+1}: {numpy.count_nonzero(blobsimg == blob)}") #i+1 kan også erstates af "blob"
 
 #Get a blob
 def GetBlob(blobsimg, id, board):
@@ -124,7 +124,7 @@ def BoardAnalysis(int):
     for i, color in enumerate(colors):
         a = Board_check(img,TypeOut[i],color) #color kan også erstats med colors[i]
         b = connected_blobs(a)
-        blob_tiles(b)
+        blob_tiles(b, color)
 
         aUP = Enlarge(a, img)
 
@@ -132,5 +132,5 @@ def BoardAnalysis(int):
         cv2.imshow(f"{color[2]}", aUP) #color[2] kan også erstates med colors[i][2]
 
 # BoardAnalysis(1)
-BoardAnalysis(14)
+BoardAnalysis(10)
 cv2.waitKey(0)
