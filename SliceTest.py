@@ -114,8 +114,11 @@ def blob_tiles(blobsimg, color):
 
 #Get a blob
 def GetBlob(blobsimg, id, board):
-    blobling = Enlarge((blobsimg == id).astype(numpy.uint8), board)* 255
-    cv2.imshow(f"Blob {id}",blobling)
+    if not numpy.any(blobsimg == id):
+        print(f"Array does not have a blob with ID {id}")
+    else:
+        blobling = Enlarge((blobsimg == id).astype(numpy.uint8), board)* 255
+        cv2.imshow(f"Blob {id}",blobling)
 
 #------------------------------------------------------------------------------------------
 
@@ -131,6 +134,5 @@ def BoardAnalysis(int):
         cv2.imshow("Board", img) 
         cv2.imshow(f"{color[2]}", aUP) #color[2] kan også erstates med colors[i][2]
 
-# BoardAnalysis(1)
-BoardAnalysis(9)
-cv2.waitKey(0)
+# BoardAnalysis(9)
+# cv2.waitKey(0)
