@@ -48,12 +48,11 @@ def find_crowns(image, template_paths, threshold=0.7):
             for result, tw, th in maps:
                 x0, y0 = max(0, x - w // 2), max(0, y - h // 2)
                 result[y0:y + h // 2 + 1, x0:x + w // 2 + 1] = 0
-    
     return crowns
 
 if __name__ == "__main__":
     #Only runs when you execute this file directly, not when it is imported
-    img = cv.imread("King Domino dataset/Cropped and perspective corrected boards/52.jpg")
+    img = cv.imread("King Domino dataset/Cropped and perspective corrected boards/36.jpg")
     boxes = find_crowns(img, ["crownupsidedown.png", "crown8.png"], threshold=0.7)
     
     print("Crowns found:", len(boxes))
