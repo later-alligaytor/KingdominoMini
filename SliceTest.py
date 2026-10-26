@@ -14,7 +14,7 @@ def Slice(board,row,number):
 # forestOut = numpy.zeros((5, 5))
 # cornOut = numpy.zeros((5, 5))
 # caveOut = numpy.zeros((5, 5))
-TypeOut = [
+types = [
 	numpy.zeros((5, 5)), # 0 Grass plains
 	numpy.zeros((5, 5)),    # 1 Forests
 	numpy.zeros((5, 5)), # 2 Corn fields
@@ -23,11 +23,6 @@ TypeOut = [
 	numpy.zeros((5, 5)),    # 5 Caves
 ]
 
-# Color boundaries i HSV (eller HSB) (lower, upper)
-# plains = ([49, 0, 136], [93, 255, 200])
-# forest = ([49, 0, 0], [93, 255, 79])
-# corn = ([32, 0, 154], [41, 255, 251])
-# cave = ([0, 0, 0], [255, 255, 25])
 colors = [
 	([49, 0, 136], [93, 255, 200], "Grass"), # 0 Grass plains
 	([49, 0, 0], [93, 255, 79], "Forest"),    # 1 Forests
@@ -36,6 +31,11 @@ colors = [
 	([26, 88, 56], [60, 166, 148], "Dessert"),  # 4 Desserts
 	([0, 0, 0], [255, 255, 25], "Cave"),    # 5 Caves
 ]
+# Color boundaries i HSV (eller HSB) (lower, upper)
+# plains = ([49, 0, 136], [93, 255, 200])
+# forest = ([49, 0, 0], [93, 255, 79])
+# corn = ([32, 0, 154], [41, 255, 251])
+# cave = ([0, 0, 0], [255, 255, 25])
 
 # Color detection ud fra boundaries. Laver sort/hvid binary billed af et tile-slice. 
 def Color_Detect(color,tile):
@@ -77,12 +77,12 @@ def Enlarge(blobsimg, board):
 
 #blob testing------------------------------------------------------------------------------------
 #Make blobs
-def connected_blobs(board): #blobs af connected felter.
-    result = numpy.zeros(board.shape)
+def connected_blobs(array): #blobs af connected felter.
+    result = numpy.zeros(array.shape)
     id = 1
-    for y, row in enumerate(board):
+    for y, row in enumerate(array):
             for x, pixel in enumerate(row):
-                if board[y, x] == 0 or result[y, x] != 0:
+                if array[y, x] == 0 or result[y, x] != 0:
                     continue #skips blanks and already burned pixels. 
                 burn_queue = [(y, x)]
                 while len(burn_queue) > 0:
@@ -92,13 +92,13 @@ def connected_blobs(board): #blobs af connected felter.
                     
                     result[y, x] = id
 
-                    if x+1 < board.shape[1] and board[y, x+1] != 0 and result[y, x+1] == 0:
+                    if x+1 < array.shape[1] and array[y, x+1] != 0 and result[y, x+1] == 0:
                         burn_queue.append((y, x + 1))
-                    if y+1 < board.shape[0] and board[y+1, x] != 0 and result[y+1, x] == 0:
+                    if y+1 < array.shape[0] and array[y+1, x] != 0 and result[y+1, x] == 0:
                         burn_queue.append((y + 1, x))
-                    if x-1 >= 0 and board[y, x-1] != 0 and result[y, x-1] == 0:
+                    if x-1 >= 0 and array[y, x-1] != 0 and result[y, x-1] == 0:
                         burn_queue.append((y, x - 1))
-                    if y-1 >= 0 and board[y-1, x] != 0 and result[y-1, x] == 0:
+                    if y-1 >= 0 and array[y-1, x] != 0 and result[y-1, x] == 0:
                         burn_queue.append((y - 1, x))
                 id += 1
     return result
@@ -114,15 +114,18 @@ def blob_tiles(blobsimg, color):
 
 #Get a blob
 def GetBlob(blobsimg, id, board):
-    blobling = Enlarge((blobsimg == id).astype(numpy.uint8), board)* 255
-    cv2.imshow(f"Blob {id}",blobling)
+    if not numpy.any(blobsimg == id):
+        print(f"Array does not have a blob with ID {id}")
+    else:
+        blobling = Enlarge((blobsimg == id).astype(numpy.uint8), board)* 255
+        cv2.imshow(f"Blob {id}",blobling)
 
 #------------------------------------------------------------------------------------------
 
 def BoardAnalysis(int):
     img = cv2.imread(f"King Domino dataset/Cropped and perspective corrected boards/{int}.jpg")
     for i, color in enumerate(colors):
-        a = Board_check(img,TypeOut[i],color) #color kan også erstats med colors[i]
+        a = Board_check(img,types[i],color) #color kan også erstats med colors[i]
         b = connected_blobs(a)
         blob_tiles(b, color)
 
@@ -131,6 +134,5 @@ def BoardAnalysis(int):
         cv2.imshow("Board", img) 
         cv2.imshow(f"{color[2]}", aUP) #color[2] kan også erstates med colors[i][2]
 
-# BoardAnalysis(1)
-BoardAnalysis(9)
-cv2.waitKey(0)
+# BoardAnalysis(9)
+# cv2.waitKey(0)
