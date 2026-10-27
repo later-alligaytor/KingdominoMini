@@ -5,7 +5,7 @@ import SliceTest
 
 def GetScore(int):
     img = cv.imread(f"King Domino dataset/Cropped and perspective corrected boards/{int}.jpg")
-    cv.imshow(f"Board {int}", img) 
+    # cv.imshow(f"Board {int}", img) 
     score = 0
     print(f"For board {int};")
 
@@ -36,8 +36,12 @@ def GetScore(int):
     print(f"Final score is {score}") #i+1 kan også erstates af "blob"
     print("")
 
-GetScore(36)
-GetScore(52)
-GetScore(48)
+j = 0
+for i in range(75):
+    ana = [1,2,3,9,16,18,20,25,37,42]
+    if i in ana:
+        GetScore(i)
+        j+=1
 
-cv.waitKey(0)
+print(f"Analysed {j} boards")
+# cv.waitKey(0)

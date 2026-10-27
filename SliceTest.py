@@ -27,9 +27,9 @@ colors = [
 	([49, 0, 100], [87, 255, 255], "Grass"), # 0 Grass plains
 	([49, 0, 0], [93, 255, 79], "Forest"),    # 1 Forests
 	([32, 0, 154], [41, 255, 251], "Corn"), # 2 Corn fields
-	([129, 0, 65], [182, 255, 223], "Ocean"),# 3 Oceans
-	([20, 0, 50], [45, 220, 125], "Dessert"),  # 4 Desserts
-	([0, 0, 0], [20, 255, 50], "Cave"),    # 5 Caves
+	([129, 85, 65], [182, 255, 223], "Ocean"),# 3 Oceans
+	([20, 0, 50], [45, 220, 140], "Dessert"),  # 4 Desserts
+	([0, 0, 0], [35, 140, 50], "Cave"),    # 5 Caves
 ]
 # Color boundaries i HSV (eller HSB) (lower, upper)
 # plains = ([49, 0, 136], [93, 255, 200])
@@ -45,9 +45,8 @@ def Color_Detect(color,tile):
     upper = numpy.array(upper, dtype = "uint8")
     mask = cv2.inRange(hsv, lower, upper)
     if (color == colors[5]): # if caves.
-        mask2 = cv2.inRange(hsv, numpy.array([145, 0, 0], dtype = "uint8"), numpy.array([255, 255, 50], dtype = "uint8"))
+        mask2 = cv2.inRange(hsv, numpy.array([145, 0, 0], dtype = "uint8"), numpy.array([255, 140, 50], dtype = "uint8"))
         mask = cv2.bitwise_or(mask, mask2)
-
     return mask
 
 # Checker om en spicefik tile er en spicefik type, og retunerer enten 1 eller 0.  
@@ -62,7 +61,7 @@ def Tile_check(board,color,row,number):
         value = math.floor(numpy.sum(tileHeight*tileWidth/2)) # er nem at detecte som starter tile (det må den ikke)
     
     if (color == colors[5]): # if caves.
-        value = math.floor(numpy.sum(tileHeight*tileWidth/5)) # dem med mange kroner er sværer at detecte.
+        value = math.floor(numpy.sum(tileHeight*tileWidth/6)) # dem med mange kroner er sværer at detecte.
 
     pixel_hits = numpy.sum(tile_detect == 255) # extracts only white pixels 
 
@@ -141,5 +140,5 @@ def BoardAnalysis(int):
         cv2.imshow("Board", img) 
         cv2.imshow(f"{color[2]}", aUP) #color[2] kan også erstates med colors[i][2]
 
-# BoardAnalysis(48)
+# BoardAnalysis(5)
 # cv2.waitKey(0)
