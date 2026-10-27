@@ -1,7 +1,7 @@
 import cv2 as cv
 import numpy as np
 from Crownfinder_real import find_crowns
-from SliceTest import types, colors, Board_check
+import SliceTest
 
 def GetScore(int):
     img = cv.imread(f"King Domino dataset/Cropped and perspective corrected boards/{int}.jpg")
