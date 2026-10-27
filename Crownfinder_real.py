@@ -45,7 +45,7 @@ def find_crowns(image, template_paths, threshold=0.7):
             work[y:y + h, x:x + w] = 255
 
             #Also wipe the score map around it so this loop doesn't repick it
-            for result, tw, th in maps:
+            for result, w, h in maps:
                 x0, y0 = max(0, x - w // 2), max(0, y - h // 2)
                 result[y0:y + h // 2 + 1, x0:x + w // 2 + 1] = 0
     return crowns
